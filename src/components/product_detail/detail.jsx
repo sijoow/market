@@ -2,7 +2,7 @@ import styles from "./detail.module.css";
 import { useParams } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import axios from 'axios'
-export const Detail = ({convertPrice}) => {
+export const Detail = ({convertPrice,cart,setCart}) => {
   const {id} = useParams();
   //전체 상품에서 현재 클릭한 상품 가져오기
   const [product,setProduct] =useState({});
@@ -22,6 +22,41 @@ export const Detail = ({convertPrice}) => {
       setProduct(data.data.products.find((product)=>product.id === parseInt(id)))
     });
   },[id]);
+
+  //중복된 물건  확인하기
+  const setQuantity =(id,quantity)=>{
+    const found = cart.filter((el)=>el.id ===id[0]); 
+    const idx = cart.indexOf(found);
+    const cartItem = {
+      //아이디 이름 수량 모두 가져오기
+      id :product.id,
+      image :product.image,
+      name :product.name,
+      price:product.price,
+      provider:product.provider,
+      quantity:quantity,
+    }
+    setCart([...cart.slice(0,idx),cartItem,...cart.slice(idx+1)])
+  }
+  
+  //장바구니 추가 함수
+  const handleCart =()=>{
+    const cartItem = {
+      //아이디 이름 수량 모두 가져오기
+      id :product.id,
+      image :product.image,
+      name :product.name,
+      price:product.price,
+      provider:product.provider,
+      quantity:count,
+    }
+    const found = cart.find((el)=>el.id===cartItem.id);
+    if(found) setQuantity(cartItem.id,found.quantity+count)
+    else setCart([...cart,cartItem])//기존 카트는 유지하고 cartItem새롭게 들어갈
+  
+  };
+
+  console.log(cart);
   return (
     //product 가들어와야 페이지를 읽어라 라는 표현식 product &&()
     product && (
@@ -92,7 +127,11 @@ export const Detail = ({convertPrice}) => {
 
           <div className={styles.btn}>
             <button className={styles.btn_buy}>바로 구매</button>
-            <button className={styles.btn_cart}>장바구니</button>
+            <button className={styles.btn_cart}
+            onClick={()=>{
+              handleCart()
+            }}
+            >장바구니</button>
           </div>
         </section>
       </main>

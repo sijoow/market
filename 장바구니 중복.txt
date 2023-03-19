@@ -1,0 +1,59 @@
+장바구니 중복값 만들기
+
+함수를 생성해준다.
+const setQuanity =()=>{}
+1.중복된 값인지 확인하기 위해선
+1.파라미터 안에 id+ 기존에 있는 갯수를 추가함
+const setQuanity =(id,quantity)=>{
+}
+2. found 함수를 통해 기존 cart 필터를 추가함
+filter 함수를 통해 내가 매개변수로 넘겨준 id값이랑
+기존 cart에 들어가있는 id값이랑 같은지 여부를 확인해준다.
+
+필터는 리턴값이 새로운 값을 리턴하기 떄문에
+[{},{},{}]// 리턴하는 값의 첫번째 값을 가져와라 
+[0]
+found 값에 inx 값도 변수로 추가해준다
+const inx =cart.indexOf(found)
+3.나머지 값들은 같기 떄문에 아래서 장바구니 추가 함수인
+cartItem 을 가져오고 수량만 매개변수속 수량으로 교체 해준다.
+
+표시 방법으로 써
+setCart([...cart.slice(0,idx),cartItem])
+
+cart복사후 cart.slice해준다 0부터 indx번호까지 그후 새로 작성한
+cartItem을 넣어준다 cart.slice(idx+1) gownsek
+
+
+ //중복된 물건  확인하기
+  const setQuantity =(id,quantity)=>{
+    const found = cart.filter((el)=>el.id ===id[0]); 
+    const idx = cart.indexOf(found);
+    const cartItem = {
+      //아이디 이름 수량 모두 가져오기
+      id :product.id,
+      image :product.image,
+      name :product.name,
+      price:product.price,
+      provider:product.provider,
+      quantity:quantity,
+    }
+    setCart([...cart.slice(0,idx),cartItem,...cart.slice(idx+1)])
+  }
+  
+  //장바구니 추가 함수
+  const handleCart =()=>{
+    const cartItem = {
+      //아이디 이름 수량 모두 가져오기
+      id :product.id,
+      image :product.image,
+      name :product.name,
+      price:product.price,
+      provider:product.provider,
+      quantity:count,
+    }
+    const found = cart.find((el)=>el.id===cartItem.id);
+    if(found) setQuantity(cartItem.id,found.quantity+count)
+    else setCart([...cart,cartItem])//기존 카트는 유지하고 cartItem새롭게 들어갈
+  
+  };
